@@ -105,9 +105,9 @@ public class CDManager {
             ObjectInputStream iStream = new ObjectInputStream(f);
             CD cd = null;
             while ((cd = (CD)iStream.readObject()) != null){
-                
-                list.add(cd);
-                map.put(cd.getId(), cd);
+                addCD(cd);
+//                list.add(cd);
+//                map.put(cd.getId(), cd);
             }
             iStream.close();
         }catch (ClassNotFoundException e){
