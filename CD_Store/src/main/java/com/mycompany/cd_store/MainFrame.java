@@ -7,6 +7,7 @@ package com.mycompany.cd_store;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -166,6 +167,8 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestoreActionPerformed
         JFileChooser fc = new JFileChooser("D:\\");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(".EIU Files","eiu");
+        fc.setFileFilter(filter);
         int option = fc.showOpenDialog(null);
         if (option == JFileChooser.APPROVE_OPTION){
             manager.readFrom(fc.getSelectedFile().getAbsolutePath());
