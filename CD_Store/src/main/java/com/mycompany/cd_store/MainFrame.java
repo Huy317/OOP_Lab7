@@ -6,6 +6,7 @@ package com.mycompany.cd_store;
 
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -13,9 +14,10 @@ import javax.swing.table.DefaultTableModel;
  * @author Student
  */
 public class MainFrame extends javax.swing.JFrame {
-
+    
     private CDManager manager = new CDManager();
     private CDModel model = new CDModel();
+
     /**
      * Creates new form Frame
      */
@@ -118,24 +120,28 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackupActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fc = new JFileChooser("D:\\");
+        int option = fc.showSaveDialog(null);
+        if (option == JFileChooser.APPROVE_OPTION){
+            manager.writeTo(fc.getCurrentDirectory()+"CD.eiu");
+        }
     }//GEN-LAST:event_btnBackupActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         int selected = table.getSelectedRow();
-            if (selected != -1) {
-                int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this row?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-                if (answer == JOptionPane.YES_OPTION) {
-                    manager.removeCD(selected);
-                    refreshModel();
-                }
+        if (selected != -1) {
+            int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this row?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (answer == JOptionPane.YES_OPTION) {
+                manager.removeCD(selected);
+                refreshModel();
             }
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String searchCategory = combobox.getSelectedItem().toString();
         String para = txtSearch.getText();
-        if (!para.equals("")){
+        if (!para.equals("")) {
             ArrayList<CD> listCD = manager.searchBy(searchCategory, para);
             clearModel();
             fillModel(listCD);
@@ -159,35 +165,42 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNewCDActionPerformed
 
     private void btnRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestoreActionPerformed
-        // TODO add your handling code here:
+        JFileChooser fc = new JFileChooser("D:\\");
+        int option = fc.showOpenDialog(null);
+        if (option == JFileChooser.APPROVE_OPTION){
+            manager.readFrom(fc.getSelectedFile().getAbsolutePath());
+            refreshModel();
+        }
     }//GEN-LAST:event_btnRestoreActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         refreshModel();
     }//GEN-LAST:event_btnRefreshActionPerformed
-    
-    private void refreshModel(){
+
+    private void refreshModel() {
         clearModel();
         fillModel();
     }
-    private void fillModel(){
-        for (CD cd : manager.getCDList()){
-            String[] rowData = {cd.getTitle(), cd.getCollection(), cd.getType(), cd.getPrice()+""};
+
+    private void fillModel() {
+        for (CD cd : manager.getCDList()) {
+            String[] rowData = {cd.getTitle(), cd.getCollection(), cd.getType(), cd.getPrice() + ""};
             model.addRow(rowData);
         }
     }
-    private void fillModel(ArrayList<CD> listCD){
-        for (CD cd : listCD){
-            String[] rowData = {cd.getTitle(), cd.getCollection(), cd.getType(), cd.getPrice()+""};
+
+    private void fillModel(ArrayList<CD> listCD) {
+        for (CD cd : listCD) {
+            String[] rowData = {cd.getTitle(), cd.getCollection(), cd.getType(), cd.getPrice() + ""};
             model.addRow(rowData);
         }
     }
-    private void clearModel(){
-        if (model != null){
+
+    private void clearModel() {
+        if (model != null) {
             model.setRowCount(0);
         }
     }
-    
 
     /**
      * @param args the command line arguments
@@ -203,16 +216,28 @@ public class MainFrame extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                }
+
+}
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainFrame.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class  
+
+.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

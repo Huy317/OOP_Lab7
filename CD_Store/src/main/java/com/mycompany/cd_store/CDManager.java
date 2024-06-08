@@ -8,6 +8,11 @@ package com.mycompany.cd_store;
  *
  * @author Student
  */
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -32,7 +37,7 @@ public class CDManager {
         map.remove(list.get(pos).getId());
         list.remove(pos);
     }
-
+    
     public ArrayList<CD> searchBy(String type, String para) {
         ArrayList<CD> returnList = new ArrayList<>();
         switch (type) {
@@ -80,5 +85,35 @@ public class CDManager {
 
     public ArrayList<CD> getCDList() {
         return list;
+    }
+    
+    public void writeTo(String path){
+        try {
+            FileOutputStream f = new FileOutputStream(path);
+            ObjectOutputStream oStream = new ObjectOutputStream(f);
+            for (CD cd : list) {
+                oStream.writeObject(cd);
+            }
+            oStream.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    public void readFrom(String path){
+        try {
+            FileInputStream f = new FileInputStream(path);
+            ObjectInputStream iStream = new ObjectInputStream(f);
+            CD cd = null;
+            while ((cd = (CD)iStream.readObject()) != null){
+                
+                list.add(cd);
+                map.put(cd.getId(), cd);
+            }
+            iStream.close();
+        }catch (ClassNotFoundException e){
+            System.out.println("Class not found");
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
