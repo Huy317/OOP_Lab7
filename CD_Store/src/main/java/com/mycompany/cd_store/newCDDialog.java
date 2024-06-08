@@ -10,13 +10,15 @@ package com.mycompany.cd_store;
  */
 import javax.swing.*;
 import java.awt.*;
-public class UI extends JFrame {
+public class newCDDialog extends JDialog {
     private JTextField txtId, txtTitle, txtPrice, txtYearOfRelease;
-    private JButton btnAdd, btnClear, btnShowAll;
+    private JButton btnAdd, btnClear, btnCancel;
     private JRadioButton rbVCD, rbCD;
     private CDManager manager = new CDManager();
-    public UI(String title) throws HeadlessException{
-        super(title);
+    protected CD cdToAdd;
+    protected boolean isSaving = false;
+    public newCDDialog(Frame owner, String title) {
+        super(owner, title);
         this.setSize(600,600);
         this.setLocation(200,200);
         this.setLayout(new GridLayout(7,1));
@@ -62,32 +64,33 @@ public class UI extends JFrame {
                 }else{
                     type = "CD";
                 }
-                CD cdToAdd = new CD(txtId.getText(),collectionBox.getSelectedItem().toString(),type,txtTitle.getText(),Double.parseDouble(txtPrice.getText()),Integer.parseInt(txtYearOfRelease.getText()));
-                if (manager.addCD(cdToAdd)){
-                    JOptionPane.showMessageDialog(null, "CD added successfully","Success",JOptionPane.INFORMATION_MESSAGE);
-                    clear();
-                }else{
-                    JOptionPane.showMessageDialog(null, "another CD with the same ID exist","Couldn't add",JOptionPane.ERROR_MESSAGE);
-                }
+                cdToAdd = new CD(txtId.getText(),collectionBox.getSelectedItem().toString(),type,txtTitle.getText(),Double.parseDouble(txtPrice.getText()),Integer.parseInt(txtYearOfRelease.getText()));
+                isSaving = true;
+                this.setVisible(false);
             } 
         });
         panel5.add(txtYearOfRelease);panel5.add(btnAdd);
 
         JPanel panel6 = new JPanel(new FlowLayout());
         btnClear = new JButton("Clear");
-        btnShowAll = new JButton("Show All");
+        btnCancel = new JButton("Cancel");
+        btnCancel.addActionListener((e)->{
+            isSaving = false;
+            this.setVisible(false);
+        });
         btnClear.addActionListener((e)->{
             clear();
         });
         
 
 
-        panel6.add(btnClear);panel6.add(btnShowAll);
+        panel6.add(btnClear);panel6.add(btnCancel);
         this.add(panel1);this.add(panel2);this.add(panel3);this.add(panel4);
         this.add(yearOfReleaseLabel);this.add(panel5);this.add(panel6);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.pack();
     }
+   
 
     public boolean checkInput(){
         if (txtId.getText().equals("") || txtTitle.getText().equals("") || txtPrice.getText().equals("")||txtYearOfRelease.getText().equals("")){

@@ -10,7 +10,7 @@ package com.mycompany.cd_store;
 public class CD_Store {
 
     public static void main(String[] args) {
-        UI ui = new UI("HUY_CD_STORE");
-        ui.setVisible(true);
+        Frame f = new Frame();
+        f.setVisible(true);
     }
 }
