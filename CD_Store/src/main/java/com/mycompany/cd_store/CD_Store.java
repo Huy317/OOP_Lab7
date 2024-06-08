@@ -10,7 +10,7 @@ package com.mycompany.cd_store;
 public class CD_Store {
 
     public static void main(String[] args) {
-        Frame f = new Frame();
+        MainFrame f = new MainFrame();
         f.setVisible(true);
     }
 }

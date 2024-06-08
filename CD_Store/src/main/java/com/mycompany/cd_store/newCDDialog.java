@@ -17,7 +17,7 @@ public class newCDDialog extends JDialog {
     private CDManager manager = new CDManager();
     protected CD cdToAdd;
     protected boolean isSaving = false;
-    public newCDDialog(Frame owner, String title) {
+    public newCDDialog(MainFrame owner, String title) {
         super(owner, title);
         this.setSize(600,600);
         this.setLocation(200,200);

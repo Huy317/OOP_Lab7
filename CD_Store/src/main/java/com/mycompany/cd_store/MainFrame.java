@@ -4,20 +4,22 @@
  */
 package com.mycompany.cd_store;
 
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Student
  */
-public class Frame extends javax.swing.JFrame {
+public class MainFrame extends javax.swing.JFrame {
 
     private CDManager manager = new CDManager();
-
+    private CDModel model = new CDModel();
     /**
      * Creates new form Frame
      */
-    public Frame() {
+    public MainFrame() {
         initComponents();
     }
 
@@ -38,7 +40,7 @@ public class Frame extends javax.swing.JFrame {
         btnRefresh = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         combobox = new javax.swing.JComboBox<>();
         txtSearch = new javax.swing.JTextField();
@@ -91,30 +93,8 @@ public class Frame extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Title", "Collection", "Type", "Price"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(jTable1);
+        table.setModel(this.model);
+        jScrollPane1.setViewportView(table);
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -142,11 +122,24 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBackupActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
+        int selected = table.getSelectedRow();
+            if (selected != -1) {
+                int answer = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this row?", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if (answer == JOptionPane.YES_OPTION) {
+                    manager.removeCD(selected);
+                    refreshModel();
+                }
+            }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
+        String searchCategory = combobox.getSelectedItem().toString();
+        String para = txtSearch.getText();
+        if (!para.equals("")){
+            ArrayList<CD> listCD = manager.searchBy(searchCategory, para);
+            clearModel();
+            fillModel(listCD);
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnNewCDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewCDActionPerformed
@@ -157,6 +150,7 @@ public class Frame extends javax.swing.JFrame {
             if (manager.addCD(dlg.cdToAdd)) {
                 JOptionPane.showMessageDialog(null, "CD added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 dlg.dispose();
+                refreshModel();
             } else {
                 JOptionPane.showMessageDialog(null, "another CD with the same ID exist", "Couldn't add", JOptionPane.ERROR_MESSAGE);
             }
@@ -169,8 +163,31 @@ public class Frame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRestoreActionPerformed
 
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
-        // TODO add your handling code here:
+        refreshModel();
     }//GEN-LAST:event_btnRefreshActionPerformed
+    
+    private void refreshModel(){
+        clearModel();
+        fillModel();
+    }
+    private void fillModel(){
+        for (CD cd : manager.getCDList()){
+            String[] rowData = {cd.getTitle(), cd.getCollection(), cd.getType(), cd.getPrice()+""};
+            model.addRow(rowData);
+        }
+    }
+    private void fillModel(ArrayList<CD> listCD){
+        for (CD cd : listCD){
+            String[] rowData = {cd.getTitle(), cd.getCollection(), cd.getType(), cd.getPrice()+""};
+            model.addRow(rowData);
+        }
+    }
+    private void clearModel(){
+        if (model != null){
+            model.setRowCount(0);
+        }
+    }
+    
 
     /**
      * @param args the command line arguments
@@ -189,20 +206,21 @@ public class Frame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Frame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Frame().setVisible(true);
+                new MainFrame().setVisible(true);
             }
         });
     }
@@ -219,7 +237,7 @@ public class Frame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable table;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }
