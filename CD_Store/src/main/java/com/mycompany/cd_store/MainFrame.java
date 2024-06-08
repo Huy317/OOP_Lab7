@@ -123,8 +123,8 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnBackupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackupActionPerformed
         JFileChooser fc = new JFileChooser("D:\\");
         int option = fc.showSaveDialog(null);
-        if (option == JFileChooser.APPROVE_OPTION){
-            manager.writeTo(fc.getCurrentDirectory()+"CD.eiu");
+        if (option == JFileChooser.APPROVE_OPTION) {
+            manager.writeTo(fc.getCurrentDirectory() + "CD.eiu");
         }
     }//GEN-LAST:event_btnBackupActionPerformed
 
@@ -167,10 +167,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void btnRestoreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRestoreActionPerformed
         JFileChooser fc = new JFileChooser("D:\\");
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(".EIU Files","eiu");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(".EIU Files", "eiu");
         fc.setFileFilter(filter);
         int option = fc.showOpenDialog(null);
-        if (option == JFileChooser.APPROVE_OPTION){
+        if (option == JFileChooser.APPROVE_OPTION) {
             manager.readFrom(fc.getSelectedFile().getAbsolutePath());
             refreshModel();
         }
@@ -179,26 +179,26 @@ public class MainFrame extends javax.swing.JFrame {
     private void btnRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshActionPerformed
         refreshModel();
     }//GEN-LAST:event_btnRefreshActionPerformed
-
+    
     private void refreshModel() {
         clearModel();
         fillModel();
     }
-
+    
     private void fillModel() {
         for (CD cd : manager.getCDList()) {
             String[] rowData = {cd.getTitle(), cd.getCollection(), cd.getType(), cd.getPrice() + ""};
             model.addRow(rowData);
         }
     }
-
+    
     private void fillModel(ArrayList<CD> listCD) {
         for (CD cd : listCD) {
             String[] rowData = {cd.getTitle(), cd.getCollection(), cd.getType(), cd.getPrice() + ""};
             model.addRow(rowData);
         }
     }
-
+    
     private void clearModel() {
         if (model != null) {
             model.setRowCount(0);
@@ -219,28 +219,24 @@ public class MainFrame extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
-}
+                    
+                }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainFrame.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(MainFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
